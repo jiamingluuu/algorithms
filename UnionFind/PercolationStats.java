@@ -1,3 +1,4 @@
+import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
@@ -54,8 +55,16 @@ public class PercolationStats {
         return mean() + 1.96 * stddev() / Math.sqrt(trials);
     }
 
-   // test client (see below)
-   public static void main(String[] args) {
-    
-   }
+    public static void main(String[] args) {
+        if (args.length != 2) {
+            throw new IllegalArgumentException("Two arguments should be provided\n");
+        }
+        
+        PercolationStats ps = new PercolationStats(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+        String confInterval = "[" + ps.confidenceLo() + ", " + ps.confidenceHi() + "]";
+
+        StdOut.println("mean                    = " + ps.mean());
+        StdOut.println("stddev                  = " + ps.stddev());
+        StdOut.println("95% confidence interval = " + confInterval);
+    }
 }

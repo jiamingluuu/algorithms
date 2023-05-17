@@ -1,35 +1,31 @@
-import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    private boolean[] grid;
+    private boolean[][] grid;
     private WeightedQuickUnionUF wqfGrid;
     private int gridSize;
     private int openSite;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
-        openSite = 0;
-        grid = new boolean[n * n];
-        gridSize = n;
-        wqfGrid = new WeightedQuickUnionUF(n * n + 2);  // includes two 
+        this.grid = new boolean[n][n];
+        this.wqfGrid = new WeightedQuickUnionUF(n * n + 2);  // includes virtual top and bottom 
+        this.gridSize = n;
+        this.openSite = 0;
 
-        for (int i = 0; i < n * n; i++)
-            grid[i] = false;
-        
         for (int i = 0; i < n; i++) {
-            wqfGrid.union(0, i);
-            wqfGrid.union(n * n + 1, n * (n - 1) + i);
+            for (int j = 0; j < n; j++) {
+                grid[i][j] = false;
+            }
         }
     }
     
     private boolean isValidSite(int row, int col) {
-        return (0 <= row && row < gridSize)
-            && (0 <= col && col < gridSize);
+        return (0 <= row && row < gridSize) && (0 <= col && col < gridSize);
     }
 
     private int getIndex(int row, int col) {
-        return (row - 1) * gridSize + col - 1;
+        return row * gridSize + col + 1;
     }
 
     // opens the site (row, col) if it is not open already
@@ -37,9 +33,17 @@ public class Percolation {
         if (!isValidSite(row, col))             return;
         if (isOpen(row, col))                   return;
 
-        openSite++;
         int center = getIndex(row, col);
-        grid[center] = true;
+        openSite++;
+        grid[row][col] = true;
+        
+        if (row == 0) {
+            wqfGrid.union(0, center);
+        }
+        
+        if (row == gridSize - 1) {
+            wqfGrid.union(gridSize * gridSize + 1, center);
+        }
 
         if (isValidSite(row - 1, col) && isOpen(row - 1, col)) {
             int above = getIndex(row - 1, col);
@@ -66,8 +70,7 @@ public class Percolation {
     public boolean isOpen(int row, int col) {
         if (!isValidSite(row, col))             return false;
         
-        int index = getIndex(row, col);
-        return grid[index];
+        return grid[row][col];
     }
 
     // is the site (row, col) full?
@@ -85,11 +88,40 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
+//        StdOut.println(wqfGrid.find(0) == wqfGrid.find(gridSize * gridSize + 1));
+//        StdOut.println(this);
+//        StdOut.println("-------------------------------");
         return wqfGrid.find(0) == wqfGrid.find(gridSize * gridSize + 1);
     }
-
-    // test client (optional)
-    public static void main(String[] args) {
-
-    }
+    
+//    @Override
+//    public String toString() {
+//        String str = "";
+//        for (int i = 0; i < gridSize; i++) {
+//            for (int j = 0; j < gridSize; j++) {
+//                if (grid[i][j]) {
+//                    str += "1 ";
+//                }
+//                else {
+//                    str += "0 ";
+//                }
+//            }
+//            str += "\n";
+//        }
+//
+//        return str;
+//    }
+//    
+//    public static void main(String[] args) {
+//        Percolation p = new Percolation(3);
+//        p.open(0, 0);
+//        p.percolates();
+//        p.open(1, 0);
+//        p.percolates();
+//        p.open(1, 1);
+//        p.percolates();
+//        p.open(2, 1);
+//        p.percolates();
+//        
+//    }
 }
