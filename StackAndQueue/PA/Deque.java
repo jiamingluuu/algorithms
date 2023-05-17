@@ -39,7 +39,9 @@ public class Deque<Item> implements Iterable<Item> {
 
     // add the item to the front
     public void addFirst(Item item) {
-        if (item == null) { throw new IllegalArgumentException("inserted item cannot be null"); }
+        if (item == null) {
+            throw new IllegalArgumentException("inserted item cannot be null");
+        }
 
         Node node = new Node(item);
         if (size == 0) {
@@ -62,7 +64,9 @@ public class Deque<Item> implements Iterable<Item> {
 
     // add the item to the back
     public void addLast(Item item) {
-        if (item == null) { throw new IllegalArgumentException("inserted item cannot be null"); }
+        if (item == null) {
+            throw new IllegalArgumentException("inserted item cannot be null");
+        }
 
         Node node = new Node(item);
         if (size == 0) {
@@ -85,7 +89,9 @@ public class Deque<Item> implements Iterable<Item> {
 
     // remove and return the item from the front
     public Item removeFirst() {
-        if (this.isEmpty()) { throw new NoSuchElementException("Deque is empty"); }
+        if (this.isEmpty()) {
+            throw new NoSuchElementException("Deque is empty");
+        }
 
         Item item = first.item;
 
@@ -97,7 +103,9 @@ public class Deque<Item> implements Iterable<Item> {
 
     // remove and return the item from the back
     public Item removeLast() {
-        if (this.isEmpty()) { throw new NoSuchElementException("Deque is empty"); }
+        if (this.isEmpty()) {
+            throw new NoSuchElementException("Deque is empty");
+        }
 
         Item item = last.item;
         
@@ -116,7 +124,9 @@ public class Deque<Item> implements Iterable<Item> {
 
         public boolean hasNext() { return current != null; }
 
-        public void remove() { throw new UnsupportedOperationException("remove() method unimplemented"); }
+        public void remove() {
+            throw new UnsupportedOperationException("remove() method unimplemented");
+        }
         
         public Item next() {
             Item item = current.item;
