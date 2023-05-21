@@ -1,22 +1,13 @@
 package StackAndQueue.PA;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import edu.princeton.cs.algs4.StdRandom;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
     private Item[] queue;
     private int size;
-
-    private class Node {
-        Item item;
-        Node next;
-        
-        private Node(Item item) {
-            this.item = item;
-            this.next = null;
-        }
-    }
     
     // construct an empty randomized queue
     public RandomizedQueue() { 
@@ -36,6 +27,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // add the item
     public void enqueue(Item item) {
+        if (item == null) { throw new IllegalArgumentException("item cannot be null"); }
         queue[size] = item;
         size++;
 
@@ -46,6 +38,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // remove and return a random item
     public Item dequeue() {
+        if (this.isEmpty()) { throw new NoSuchElementException("queue is empty"); }
+
         int index = StdRandom.uniformInt(size);
         Item item = queue[index];
         queue[index] = queue[--size];
@@ -58,6 +52,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // return a random item (but do not remove it)
     public Item sample() {
+        if (this.isEmpty()) { throw new NoSuchElementException("queue is empty"); }
+
         int index = StdRandom.uniformInt(size);
         Item item = queue[index];
         return item;
@@ -72,7 +68,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         private int i = 0;
 
         public boolean hasNext() { return i < size; }
-        public void remove() { }
+        public void remove() { throw new UnsupportedOperationException("remove() method is unimplemented"); }
         public Item next() { return queue[i++]; }
     }
     
@@ -87,5 +83,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     // unit testing (required)
-    public static void main(String[] args)
+    public static void main(String[] args) {
+        
+    }
 }
